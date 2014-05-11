@@ -1,0 +1,114 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
+
+
+public class GenerateAPDFbyExternalLibrary {
+
+	public static void main(String[] args) throws DocumentException, IOException {
+
+		String a = null,b = null;
+		Document doc = new Document();
+		PdfWriter.getInstance(doc, new FileOutputStream("e:/temp/1.pdf"));
+		doc.open();
+		BaseFont baseFont = BaseFont.createFont("C:/Windows/Fonts/arial.ttf", BaseFont.IDENTITY_H,true);
+		Font black = new Font(baseFont,60f,0,BaseColor.BLACK);
+		Font red = new Font(baseFont,60f,0,  BaseColor.RED);
+		PdfPTable table = new PdfPTable(4);
+		table.setWidthPercentage(90);
+		table.getDefaultCell().setFixedHeight(150);
+		for(String temp: printCard(a,b))
+			
+			
+		{
+			if(temp.contains("\u2663"))
+				table.addCell(new Paragraph(temp,black));
+			if(temp.contains("\u2660"))
+				table.addCell(new Paragraph(temp,black));
+			if(temp.contains("\u2665"))
+				table.addCell(new Paragraph(temp,red));
+			if(temp.contains("\u2666"))
+				table.addCell(new Paragraph(temp,red));
+		}
+		doc.add(table);
+		doc.close();
+
+	}
+public static ArrayList<String> printCard (String cardColor, String card)
+
+{
+	ArrayList<String> cardArray = new ArrayList<String>();
+	for(int i = 0; i< 4;i++)
+	{
+		String a = null;
+		String b = null;
+		for(String temp: cards(a,b))
+		{
+			if (i==0)
+			{
+				b = "\u2663";
+				cardArray.add(temp + b);
+			}
+			else if(i==1)
+			{
+				b   = "\u2666";
+				cardArray.add(temp + b);
+			}
+			else if (i==2)
+			{
+				b="\u2665";
+				cardArray.add(temp + b );
+			}
+			else if (i==3)
+			{
+				b="\u2660";
+				cardArray.add(temp + b);
+			}
+		}
+		
+	}
+	
+	return cardArray;
+	
+
+}
+	
+	public static ArrayList<String> cards(String card, String cardColor)
+	{
+		ArrayList<String> array = new ArrayList<String>();
+		int cardNumber = 14;
+		for(int i = 2; i <= cardNumber; i++)
+		{
+			
+			card = Integer.toString(i);
+			switch (card)
+				{
+			case "11" :  card  = "J";
+			break;
+			case "12" :  card = "Q";
+			break;
+			case "13" : card  = "K";
+			break;
+			case "14" : card = "A";
+			break;
+				}
+			
+			//System.out.println(card + cardColor );
+			
+			array.add(card); 
+			}
+		return array;
+	}
+}
+
